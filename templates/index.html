@@ -1,0 +1,384 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Hosting Toolbox</title>
+    <!-- Bootstrap -->
+    <link href="{{ url_for('static', filename='css/bootstrap.min.css') }}" rel="stylesheet">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+  </head>
+  <body>
+
+    <!-- Navbar -->
+    <nav class="navbar navbar-default">
+      <div class="container">
+        <div class="navbar-header">
+          <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
+            <span class="sr-only">Toggle navigation</span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+          </button>
+          <a class="navbar-brand" href="#">ToolBox | Dashboard</a>
+        </div>
+        <div id="navbar" class="collapse navbar-collapse">
+          <ul class="nav navbar-nav">
+            <li class="active"><a href="admin.html">dashboard</a></li>
+            <li><a href="pages.html">About</a></li>
+            <li><a href="posts.html">Developer</a></li>
+            <li><a href="users.html">Users</a></li>
+          </ul>
+        </div>
+      </div>
+    </nav>
+
+    <!-- Header -->
+    <header id="header">
+      <div class="container">
+        <div class="row">
+          <div class="col-md-10">
+            <h1><span class="glyphicon glyphicon-cog" aria-hidden="true"></span> Tools Box <small>Manage host and domians</small></h1>
+          </div>
+        </div>
+      </div>
+    </header>
+
+    <!-- Main Area -->
+    <section id="main">
+      <div class="container">
+        <div class="row">
+          <div class="col-md-3">
+            <!-- Password Generator -->
+            <div class="panel panel-default">
+              <div class="panel-heading main-color-bg">
+                <span class="glyphicon glyphicon-cog" aria-hidden="true"></span> Password Generator
+              </div>
+              <div class="panel-body">
+                <form>
+                  <div class="input-group spinner">
+                    <input type="text" class="form-control" value="6" >
+                    <div class="input-group-btn-vertical">
+                      <button class="btn btn-default" type="button">
+                        <span class="glyphicon glyphicon-plus"></span>
+                      </button>
+                      <button class="btn btn-default" type="button">
+                        <span class="glyphicon glyphicon-minus"></span>
+                      </button>
+                    </div>
+                  </div>
+                  <!-- includ character checkbox -->
+                  <div class="container">
+                    <div class="checkbox">
+                      <input type="checkbox"> 1234...
+                    </div>
+                    <div class="checkbox">
+                      <input type="checkbox"> abcd...
+                    </div>
+                    <div class="checkbox">
+                      <input type="checkbox"> ABCD...
+                    </div>
+                    <div class="checkbox">
+                      <input type="checkbox"> @#$%...
+                    </div>
+                  </div>
+                  <!-- generated pass and btn -->
+                  <div class="input-group center-block generated-pass-btn">
+                    <input type="text" class="form-control" placeholder="Generated password" readonly>
+                    <hr>
+                    <button class="btn btn-warning pass-gen-btn">Generate</button>
+                  </div>
+                </form>
+              </div>
+            </div>
+            <!-- side List of users and post and pages with badges-->
+            <div class="panel panel-default">
+              <div class="panel-heading main-color-bg">Domain avalibility check</div>
+              <div class="panel-body">
+                <form>
+                  <div class="input-group domain-check-input center-block">
+                    <input type="text" class="form-control" placeholder="check .com .ir .net ....">
+                    <hr>
+                    <button class="btn btn-info btn-check-domain">check</button>
+                  </div>
+
+                  <div class="domain-check-result">
+                    <ul class="list-group">
+                      <li class="list-group-item">
+                        <span class="badge glyphicon glyphicon-remove
+                        "> </span>
+                        abud.net
+                      </li>
+                      <li class="list-group-item">
+                        <span class="badge glyphicon glyphicon-ok
+                        "> </span>
+                        abud.com
+                      </li>
+                      <li class="list-group-item">
+                        <span class="badge glyphicon glyphicon-remove
+                        "> </span>
+                        abud.ir
+                      </li>
+                      <li class="list-group-item">
+                        <span class="badge glyphicon glyphicon-ok
+                        "> </span>
+                        abud.com
+                      </li>
+                    </ul>
+                  </div>
+
+
+                </form>
+              </div>
+            </div>
+            <!-- disk + bandwith usage -->
+            <div class="well">
+              <h4>Disk Space Used</h4>
+              <div class="progress">
+                <div class="progress-bar" role="progressbar" aria-valuenow="60" aria-valuemin="0" aria-valuemax="100" style="width: 60%;">60%</div>
+              </div>
+              <h4>Bandwidth used</h4>
+              <div class="progress">
+                <div class="progress-bar" role="progressbar" aria-valuenow="60" aria-valuemin="0" aria-valuemax="100" style="width: 40%;">40%</div>
+              </div>
+            </div>
+          </div>
+
+          <!-- main area title -->
+          <div class="col-md-9">
+            <div class="panel panel-default">
+              <div class="panel-heading main-color-bg">
+                <h3 class="panel-title">Select tool and search domain</h3>
+              </div>
+              <!-- main panel -->
+              <div class="panel-body">
+
+              <!-- Search bar input -->
+              <div class="row">
+                <form>
+                  <div class="col-md-12">
+                    <div class="input-group">
+                      <input type="text" placeholder="your domain" class="form-control">
+                      <span class="input-group-btn">
+                        <button class="btn btn-primary" type="button">Go!</button>
+                      </span>
+                    </div>
+                  </div>
+                </form>
+              </div>
+              <br>
+              <!-- service checkbox's -->
+              <div class="row">
+                <div class="col-md-12">
+                  <div class="form-inline">
+                    <div class="checkbox">
+                      <input type="checkbox"> DNS 
+                    </div>
+                    |
+                    <div class="checkbox">
+                      <input type="checkbox"> SSl 
+                    </div>
+                    |
+                    <div class="checkbox">
+                      <input type="checkbox"> Port Scan 
+                    </div>
+                    |
+                    <div class="checkbox">
+                      <input type="checkbox"> Whois 
+                    </div>
+                    |
+                    <div class="checkbox">
+                      <input type="checkbox"> IP Location 
+                    </div>
+                    |
+                    <div class="checkbox">
+                      <input type="checkbox"> Ping 
+                    </div>
+                    |
+                    <div class="checkbox">
+                      <input type="checkbox"> Trace 
+                    </div>
+                  </div>
+                </div>
+              </div>
+              </div>
+            </div>
+
+            <!-- Info Section -->
+            <div class="panel panel-default">
+              <div class="panel-heading">
+                <h3 class="panel-title">Info</h3>
+              </div>
+              <div class="panel-body">
+
+                <!-- service result boxes -->
+                <div class="col-md-4">
+                  <div class="panel panel-default">
+                    <div class="panel-heading main-color-bg">
+                      <span class="glyphicon glyphicon-list-alt
+                      "></span> DNS Info
+                    </div>
+                    <div class="panel-body">
+                      <p>Lorem, ipsum dolor sit amet consectetur adipisicing elit. Vero, saepe.</p>
+                    </div>
+                  </div>
+                </div>
+
+                <div class="col-md-4">
+                  <div class="panel panel-default">
+                    <div class="panel-heading main-color-bg">
+                      <span class="glyphicon glyphicon-barcode
+                      "></span> SSl Info
+                    </div>
+                    <div class="panel-body">
+                      <p>Lorem, ipsum dolor sit amet consectetur adipisicing elit. Vero, saepe.</p>
+                    </div>
+                  </div>
+                </div>
+
+                <div class="col-md-4">
+                  <div class="panel panel-default">
+                    <div class="panel-heading main-color-bg">
+                      <span class="glyphicon glyphicon-hdd
+                      "></span> Port Info
+                    </div>
+                    <div class="panel-body">
+                      <p>Lorem, ipsum dolor sit amet consectetur adipisicing elit. Vero, saepe.</p>
+                    </div>
+                  </div>
+                </div>
+
+                <div class="col-md-4">
+                  <div class="panel panel-default">
+                    <div class="panel-heading main-color-bg">
+                      <span class="glyphicon glyphicon-user
+                        "></span> Whois Info
+                      </div>
+                    <div class="panel-body">
+                      <p>Lorem, ipsum dolor sit amet consectetur adipisicing elit. Vero, saepe.</p>
+                    </div>
+                  </div>
+                </div>
+
+                <div class="col-md-4">
+                  <div class="panel panel-default">
+                    <div class="panel-heading main-color-bg">
+                      <span class="glyphicon glyphicon-wrench
+                      "></span> IP Info
+                    </div>
+                    <div class="panel-body">
+                      <p>Lorem, ipsum dolor sit amet consectetur adipisicing elit. Vero, saepe.</p>
+                    </div>
+                  </div>
+                </div>
+
+                <div class="col-md-4">
+                  <div class="panel panel-default">
+                    <div class="panel-heading main-color-bg">
+                      <span class="glyphicon glyphicon-globe
+                      "></span> Ping Info
+                    </div>
+                    <div class="panel-body">
+                      <p>Lorem, ipsum dolor sit amet consectetur adipisicing elit. Vero, saepe.</p>
+                    </div>
+                  </div>
+                </div>
+
+                <div class="col-md-4">
+                  <div class="panel panel-default">
+                    <div class="panel-heading main-color-bg">
+                      <span class="glyphicon glyphicon-random
+                      "></span> Trace Info
+                    </div>
+                    <div class="panel-body">
+                      <p>Lorem, ipsum dolor sit amet consectetur adipisicing elit. Vero, saepe.</p>
+                    </div>
+                  </div>
+                </div>
+
+                <div class="col-md-4">
+                  <div class="panel panel-default">
+                    <div class="panel-heading main-color-bg">DNS Info</div>
+                    <div class="panel-body">
+                      <p>Lorem, ipsum dolor sit amet consectetur adipisicing elit. Vero, saepe.</p>
+                    </div>
+                  </div>
+                </div>
+
+                <div class="col-md-4">
+                  <div class="panel panel-default">
+                    <div class="panel-heading main-color-bg">DNS Info</div>
+                    <div class="panel-body">
+                      <p>Lorem, ipsum dolor sit amet consectetur adipisicing elit. Vero, saepe.</p>
+                    </div>
+                  </div>
+                </div>
+                
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+    
+    <!-- Footer -->
+    <footer id="footer">
+      <p>Copyright ADmin Panel</p>
+    </footer>
+
+    <!-- Modal -->
+    <div class="modal fade" id="addPage_model" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+      <div class="modal-dialog" role="document">
+        <div class="modal-content">
+          <form>
+            <div class="modal-header">
+              <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+              <h4 class="modal-title" id="myModalLabel">Add New Page</h4>
+            </div>
+            <div class="modal-body">
+
+              <div class="form-group">
+                <label>Page Title</label>
+                <input type="text" class="form-control" placeholder="Page title">
+              </div>
+
+              <div class="form-group">
+                <label>Page Body</label>
+                <textarea name="editor1" placeholder="page body" class="form-control"></textarea>
+              </div>
+
+              <div class="checkbox">
+                <label>
+                  <input type="checkbox"> Published
+                </label>
+              </div>
+
+              <div class="form-group">
+                <label>Meta Tags</label>
+                <input type="text" class="form-control" placeholder="Add some tags...">
+              </div>
+
+              <div class="form-group">
+                <label>Meta Descriptio</label>
+                <input type="text" class="form-control" placeholder="Add Meta Tags Descriptio...">
+              </div>
+            </div>
+            <div class="modal-footer">
+              <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+              <button type="button" class="btn btn-primary">Save changes</button>
+            </div>
+          </div>
+        </form>
+      </div>
+    </div>
+
+    <script>
+            CKEDITOR.replace( 'editor1' );
+    </script>
+    <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+    <!-- Include all compiled plugins (below), or include individual files as needed -->
+    <script src="js/bootstrap.min.js"></script>
+  </body>
+</html>
