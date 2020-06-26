@@ -1,4 +1,5 @@
-from flask import Flask, render_template
+from flask import Flask, render_template, request
+import json
 import dns.resolver
 
 app = Flask(__name__)
@@ -7,6 +8,29 @@ app = Flask(__name__)
 @app.route('/')
 def hello():
     return render_template('index.html')
+
+
+
+@app.route('/tools_check', methods=['POST'])
+def runtools():
+    data = request.data.decode()
+    print(data)
+    # d = json.loads(data)
+
+
+    
+
+
+
+
+
+
+    return 'data recived.....'
+
+
+
+
+
 
 
 
