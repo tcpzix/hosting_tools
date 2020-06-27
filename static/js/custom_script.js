@@ -25,19 +25,14 @@ function getInputValue(name) {
 }
 
 function toolsCheck() {
-    const domain = getInputValue('tools-check-input');
-    const tool = getCheckboxesValue('tool-checkbox');
-    let tools = JSON.stringify(tool);
-    let domains = JSON.stringify(domain);
+    // get domain and tools checkboxes value
+    const domain = JSON.stringify(getInputValue('tools-check-input'));
+    const tools = JSON.stringify(getCheckboxesValue('tool-checkbox'));
+
     url = 'tools_check';
-    data = {
-        domains,
-        tools
-        
-    }
+    data = domain + '-' + tools;
 
-    console.log('sended data: ', data);
-
+    
     let sendData = ajaxGet(url, data);
     sendData.done(function(data) {
         console.log(data);
@@ -54,3 +49,5 @@ function ajaxGet(url, data) {
         type: 'POST'
     });
 }
+
+getInputValue('tools-check-input');

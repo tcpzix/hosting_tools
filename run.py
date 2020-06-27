@@ -1,6 +1,7 @@
 from flask import Flask, render_template, request
 import json
 import dns.resolver
+import subprocess
 
 app = Flask(__name__)
 
@@ -10,26 +11,45 @@ def hello():
     return render_template('index.html')
 
 
+def dnscheck(domain):
+    cmd = 'nslookup'
+    swch = '-type='
+    record = ['NS', 'MX', 'A', 'SOA']
+    result = {}
+    for r in range(len(record)):
+        answer = subprocess.Popen([cmd, swch+record[r], domain], bufsize=1, universal_newlines=True, stdout=subprocess.PIPE)
+        temp = answer.stdout.readlines()
+        output = [x.replace('\t',' ').replace('\n','') for x in temp[4:]]
+        result.update({ record[r]+' Record': output})
+    return result
+
 
 @app.route('/tools_check', methods=['POST'])
 def runtools():
-    data = request.data.decode()
-    print(data)
-    # d = json.loads(data)
+    # decode byte object to str
+    data = request.data.decode('utf-8')
+    # convert str to list
+    data_list = data.split('-')
+    # get domain
+    domain = data_list[0]
+    # get tools checkbox list
+    tools = json.loads(data_list[1])
+    result = {}
 
 
+    if 'dns' in tools:
+        dnsrecords = dnscheck(str(domain))
+        result.update({'DNS':dnsrecords})
     
 
+    return result
 
 
-
-
-
-    return 'data recived.....'
-
-
-
-
+@app.route('/dns/<domain>', methods=['GET', 'POST'])
+def dnsr(domain):
+    t = dnscheck(domain)
+    print(type(t))
+    return t
 
 
 
@@ -50,7 +70,7 @@ if __name__ == '__main__':
 
 # print('====NS====')
 # for data in nameservers:
-	
+
 # 	print(data)
 
 
@@ -68,12 +88,11 @@ if __name__ == '__main__':
 # 	prin(data)
 
 
-
 # def get_records(domain):
 #     """
 #     Get all the records associated to domain parameter.
-#     :param domain: 
-#     :return: 
+#     :param domain:
+#     :return:
 #     """
 #     ids = [
 #         'NONE',
@@ -145,19 +164,18 @@ if __name__ == '__main__':
 #         'TA',
 #         'DLV',
 #     ]
-    
+
 #     for a in ids:
 #         try:
 #             answers = dns.resolver.query(domain, a)
 #             for rdata in answers:
 #                 print(a, ':', rdata.to_text())
-    
+
 #         except Exception as e:
 #             print(e)  # or pass
 
 # if __name__ == '__main__':
 #     get_records('parspack.com')
-
 
 
 # import dns.resolver
