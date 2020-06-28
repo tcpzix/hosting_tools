@@ -30,23 +30,43 @@ function toolsCheck() {
     const tools = JSON.stringify(getCheckboxesValue('tool-checkbox'));
 
     url = 'tools_check';
-    data = domain + '-' + tools;
+    data = {
+        'domain' : domain,
+        'tools' : tools
+    }
 
-    
     let sendData = ajaxGet(url, data);
     sendData.done(function(data) {
         console.log(data);
+        let values = Object.keys(data).map(function(key){
+            return data[key];
+        });
+        appendData(values);
     });
-
 }
 
+
+function appendData(data) {
+    let ns = document.getElementById('ns-record');
+    let mx = document.getElementById('mx-record');
+    let a = document.getElementById('a-record');
+    let soa = document.getElementById('soa-record');
+    for (var i = 0; i < data.length; i++) {
+        ns.innerHTML = data[i].NS
+        mx.innerHTML = data[i].MX
+        a.innerHTML = data[i].A
+        soa.innerHTML = data[i].SOA
+
+    }
+}
 
 function ajaxGet(url, data) {
     return $.ajax({
         url: window.origin+'/'+url,
-        data: data,
+        data: JSON.stringify(data),
         contentType: 'application/json',
-        type: 'POST'
+        type: 'POST',
+        dataType : 'json'
     });
 }
 

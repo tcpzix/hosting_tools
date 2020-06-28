@@ -11,45 +11,55 @@ def hello():
     return render_template('index.html')
 
 
+
+
+@app.route('/tools_check', methods=['GET', 'POST'])
+def runtools():
+    data = request.get_json()
+    # exclude " from string
+    domain = data['domain'].strip('"')
+    tools = data['tools']
+
+    result = {}
+    
+    if 'dns' in tools:
+        dnsrecords = dnscheck(domain)
+        result.update({'DNS':dnsrecords})
+    
+    return result
+
+
+
+
+
+
+
+
+
+
+
+
+
 def dnscheck(domain):
+    # terminal command
     cmd = 'nslookup'
+    # command switch's
     swch = '-type='
     record = ['NS', 'MX', 'A', 'SOA']
     result = {}
     for r in range(len(record)):
         answer = subprocess.Popen([cmd, swch+record[r], domain], bufsize=1, universal_newlines=True, stdout=subprocess.PIPE)
         temp = answer.stdout.readlines()
+        # cut the \n and \t from text and show line 4 to end 
         output = [x.replace('\t',' ').replace('\n','') for x in temp[4:]]
-        result.update({ record[r]+' Record': output})
+        result.update({ record[r]: output})
     return result
 
 
-@app.route('/tools_check', methods=['POST'])
-def runtools():
-    # decode byte object to str
-    data = request.data.decode('utf-8')
-    # convert str to list
-    data_list = data.split('-')
-    # get domain
-    domain = data_list[0]
-    # get tools checkbox list
-    tools = json.loads(data_list[1])
-    result = {}
 
 
-    if 'dns' in tools:
-        dnsrecords = dnscheck(str(domain))
-        result.update({'DNS':dnsrecords})
-    
-
-    return result
 
 
-@app.route('/dns/<domain>', methods=['GET', 'POST'])
-def dnsr(domain):
-    t = dnscheck(domain)
-    print(type(t))
-    return t
 
 
 
