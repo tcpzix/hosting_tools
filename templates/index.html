@@ -39,7 +39,7 @@
       <div class="container">
         <div class="row">
           <div class="col-md-10">
-            <h1><span class="glyphicon glyphicon-cog" aria-hidden="true"></span> Tools Box <small>Manage host and domians</small></h1>
+            <h1><span class="glyphicon glyphicon-cog" aria-hidden="true"></span> Tools Box <small>Your IP Location: {{ ip }} {{ location }}</small></h1>
           </div>
         </div>
       </div>
@@ -271,8 +271,60 @@
                       <span class="glyphicon glyphicon-user
                         "></span> Whois Info
                       </div>
-                    <div class="panel-body">
-                      <p>Lorem, ipsum dolor sit amet consectetur adipisicing elit. Vero, saepe.</p>
+                    <div class="panel-body" id="whois-output">
+                      <ul class="list-group">
+                        <li class="list-group-item list-group-item-info">Important Data</li>
+                        <li class="list-group-item">
+                          <tr>
+                            <td><span class="label label-primary">Domain Name:</span></td>
+                            <td><strong class="text-uppercase" id="whois-domain"></strong></td>
+                          </tr>
+                          |
+                          <tr>
+                            <td><span class="label label-success">Update Date:</span></td>
+                            <td><strong class="text-uppercase" id="whois-update"></strong></td>
+                          </tr>
+                          |
+                          <tr>
+                            <td><span class="label label-danger">Expire Date:</span></td>
+                            <td><strong id="whois-expire"></strong></td>
+                          </tr>
+                        </li>
+                        <li class="list-group-item list-group-item-warning">Registration Data</li>
+                        <li class="list-group-item">
+                          <table class="table">
+                            <tbody>
+                              <tr>
+                                <td>Name</td>
+                                <td id="whois-name"></td>
+                              </tr>
+                              <tr>
+                                <td>organization</td>
+                                <td id="whois-org"></td>
+                              </tr>
+                              <tr>
+                                <td>street1</td>
+                                <td id="whois-street"></td>
+                              </tr>
+                              <tr>
+                                <td>city</td>
+                                <td id="whois-city"></td>
+                              </tr>
+                              <tr>
+                                <td>email</td>
+                                <td id="whois-email"></td>
+                              </tr>
+                              <tr>
+                                <td>telephone</td>
+                                <td id="whois-phone"></td>
+                              </tr>
+                            </tbody>
+                          </table>
+                        </li>
+                        <li class="list-group-item list-group-item-danger">Name Servers</li>
+                        <li class="list-group-item" id="whois-ns">
+                        </li>
+                      </ul>
                     </div>
                   </div>
                 </div>

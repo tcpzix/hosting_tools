@@ -1,6 +1,6 @@
 from flask import Flask, render_template, request
 import json
-import dns.resolver
+import ipinfo
 import subprocess
 
 app = Flask(__name__)
@@ -8,7 +8,11 @@ app = Flask(__name__)
 
 @app.route('/')
 def hello():
-    return render_template('index.html')
+    # get userr ip
+    user_ip = request.remote_addr
+    # get user ip location
+    user_location = iplocation('217.218.8.246')
+    return render_template('index.html', ip=user_ip ,location=user_location.city)
 
 
 
@@ -19,18 +23,20 @@ def runtools():
     # exclude " from string
     domain = data['domain'].strip('"')
     tools = data['tools']
-
     result = {}
-    
     if 'dns' in tools:
         dnsrecords = dnscheck(domain)
         result.update({'DNS':dnsrecords})
-    
     return result
 
 
 
-
+# get ip Location wit ipinfo.io api
+def iplocation(ip):
+    token = 'f1959802f790e3'
+    handler = ipinfo.getHandler(token)
+    result = handler.getDetails(ip)
+    return result
 
 
 
