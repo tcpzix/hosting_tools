@@ -2,21 +2,21 @@ from flask import Flask, render_template, request
 import json
 import ipinfo
 import subprocess
+import socket
+import requests
+
 
 app = Flask(__name__)
 
-
 @app.route('/')
-def hello():
+def home():
     # get userr ip
     user_ip = request.remote_addr
     # get user ip location
-    user_location = iplocation('217.218.8.246')
-    return render_template('index.html', ip=user_ip ,location=user_location.city)
+    user_location = iplocation('217.218.8.250')
+    return render_template('index.html', ip=user_ip ,location=user_location['city'])
 
-
-
-
+# this is main api that return everything
 @app.route('/tools_check', methods=['GET', 'POST'])
 def runtools():
     data = request.get_json()
@@ -24,10 +24,40 @@ def runtools():
     domain = data['domain'].strip('"')
     tools = data['tools']
     result = {}
+
     if 'dns' in tools:
         dnsrecords = dnscheck(domain)
         result.update({'DNS':dnsrecords})
-    return result
+
+    if 'whois' in tools:
+        whois_record = whois(domain)
+        result.update({'WHOIS': whois_record})
+
+    if 'port scan' in tools:
+        ports = portscan(domain)
+        result.update({'PORTS' : ports})
+        print('port scan runs.........')
+
+    if 'ip' in tools:
+        loc = iplocation(socket.gethostbyname(domain))
+        result.update({'IPLOC' : loc})
+
+    return json.dumps(result, indent=2)
+
+
+# Scan common ports for host
+def portscan(host):
+    port_list = {80:"HTTP", 443:"HTTPS", 21:"FTP", 22:"SSH", 23:"TELNET", 25:"SMTP", 110:"POP3", 123:"NTP", 143:"IMAP", 2222:"DIRECTADMIN", 8443:"PLESK-HTTPS", 8880:"PLESK", 3306:"MYSQL", 1433:"MICROSOFT-SQL", 5432:"POSTGRE-SQL", 2083:"CPANEL"}
+    result = {}
+    for port in port_list:
+        s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+        s.settimeout(0.5)
+        conn = s.connect_ex((host,port))
+        if(conn == 0):
+            result.update({port:port_list.get(port)})
+        s.close
+    return result          
+
 
 
 
@@ -35,17 +65,63 @@ def runtools():
 def iplocation(ip):
     token = 'f1959802f790e3'
     handler = ipinfo.getHandler(token)
-    result = handler.getDetails(ip)
+    answer = handler.getDetails(ip)
+    result = {
+        'ip' : answer.ip,
+        'country' : answer.country,
+        "region" : answer.region,
+        "city" : answer.city,
+        'timezone' : answer.timezone
+    }
     return result
 
 
 
 
 
+def whois(domain):
+    req = requests.get(f"https://www.whoisxmlapi.com/whoisserver/WhoisService?apiKey=at_mHEbeZYigz4NO4pjtlEyPGKTJOB20&domainName={domain}&outputFormat=JSON")
+    answer = req.json()
+    # check domian for ir or not 
+    if('ir' in domain):
+        domain = answer['WhoisRecord']['domainName']
+        owner = answer['WhoisRecord']['registryData']['technicalContact']['name']
+        org = answer['WhoisRecord']['registryData']['administrativeContact']['organization']
+        email = answer['WhoisRecord']['registryData']['technicalContact']['email']
+        city = answer['WhoisRecord']['registryData']['administrativeContact']['city']
+        ns = answer['WhoisRecord']['registryData']['nameServers']['hostNames']
+        phone = answer['WhoisRecord']['registryData']['administrativeContact']['telephone']
+        update_date = answer['WhoisRecord']['registryData']['updatedDate']
+        expire_date = answer['WhoisRecord']['registryData']['expiresDate']
+    else:
+        domain = answer['WhoisRecord']['registryData']['domainName']
+        owner = answer['WhoisRecord']['technicalContact']['name']
+        org = answer['WhoisRecord']['administrativeContact']['organization']
+        email = answer['WhoisRecord']['technicalContact']['email']
+        city = answer['WhoisRecord']['administrativeContact']['city']
+        ns = answer['WhoisRecord']['nameServers']['hostNames']
+        phone = answer['WhoisRecord']['administrativeContact']['telephone']
+        update_date = answer['WhoisRecord']['updatedDate']
+        expire_date = answer['WhoisRecord']['expiresDate']
+    result = {
+        'domain' : domain,
+        'owner' : owner,
+        'org' : org,
+        'email' : email,
+        'city' : city,
+        'ns' : ns,
+        'phone' : phone,
+        'update' : update_date,
+        'expire' : expire_date
+
+    }
+    return result
 
 
 
 
+
+# get domain dns record
 def dnscheck(domain):
     # terminal command
     cmd = 'nslookup'
@@ -57,165 +133,13 @@ def dnscheck(domain):
         answer = subprocess.Popen([cmd, swch+record[r], domain], bufsize=1, universal_newlines=True, stdout=subprocess.PIPE)
         temp = answer.stdout.readlines()
         # cut the \n and \t from text and show line 4 to end 
-        output = [x.replace('\t',' ').replace('\n','') for x in temp[4:]]
+        output = [x.replace('\t','').replace('\n','') for x in temp[4:]]
+
         result.update({ record[r]: output})
     return result
-
-
-
-
-
-
-
-
 
 
 
 if __name__ == '__main__':
     app.run(debug=True)
 
-# domain = 'parspack.com'
-
-# nameservers = dns.resolver.query(domain,'NS')
-# arecord = dns.resolver.query(domain,'A')
-# mx = dns.resolver.query(domain,'MX')
-# soa = dns.resolver.query(domain,'SOA')
-
-# for i in range(10):
-# 	print('-')
-
-# print('====NS====')
-# for data in nameservers:
-
-# 	print(data)
-
-
-# print('====A Record====')
-# for data in arecord:
-# 	print(data)
-
-# print('====MX====')
-
-# for data in mx:
-# 	print(data)
-
-# print('====SOA====')
-# for data in soa:
-# 	prin(data)
-
-
-# def get_records(domain):
-#     """
-#     Get all the records associated to domain parameter.
-#     :param domain:
-#     :return:
-#     """
-#     ids = [
-#         'NONE',
-#         'A',
-#         'NS',
-#         'MD',
-#         'MF',
-#         'CNAME',
-#         'SOA',
-#         'MB',
-#         'MG',
-#         'MR',
-#         'NULL',
-#         'WKS',
-#         'PTR',
-#         'HINFO',
-#         'MINFO',
-#         'MX',
-#         'TXT',
-#         'RP',
-#         'AFSDB',
-#         'X25',
-#         'ISDN',
-#         'RT',
-#         'NSAP',
-#         'NSAP-PTR',
-#         'SIG',
-#         'KEY',
-#         'PX',
-#         'GPOS',
-#         'AAAA',
-#         'LOC',
-#         'NXT',
-#         'SRV',
-#         'NAPTR',
-#         'KX',
-#         'CERT',
-#         'A6',
-#         'DNAME',
-#         'OPT',
-#         'APL',
-#         'DS',
-#         'SSHFP',
-#         'IPSECKEY',
-#         'RRSIG',
-#         'NSEC',
-#         'DNSKEY',
-#         'DHCID',
-#         'NSEC3',
-#         'NSEC3PARAM',
-#         'TLSA',
-#         'HIP',
-#         'CDS',
-#         'CDNSKEY',
-#         'CSYNC',
-#         'SPF',
-#         'UNSPEC',
-#         'EUI48',
-#         'EUI64',
-#         'TKEY',
-#         'TSIG',
-#         'IXFR',
-#         'AXFR',
-#         'MAILB',
-#         'MAILA',
-#         'ANY',
-#         'URI',
-#         'CAA',
-#         'TA',
-#         'DLV',
-#     ]
-
-#     for a in ids:
-#         try:
-#             answers = dns.resolver.query(domain, a)
-#             for rdata in answers:
-#                 print(a, ':', rdata.to_text())
-
-#         except Exception as e:
-#             print(e)  # or pass
-
-# if __name__ == '__main__':
-#     get_records('parspack.com')
-
-
-# import dns.resolver
-# import re
-
-# domain = 'iran.ir'
-
-# response = dns.resolver.resolve(domain, 'SOA')
-
-# if response.rrset is not None:
-#     pattern= r'(%s)\.\s(\d{1,})\s(\w+)\sSOA\s(.*?)\.\s(.*?)\.\s(\d{1,})\s(\d{1,})\s(\d{1,})\s(\d{1,})\s(\d{1,})' % domain
-#     match = re.match(pattern, str(response.rrset))
-#     m_name, ttl, class_, ns, email, serial, refresh, retry, expiry, minim = match.groups()
-
-# output ='''
-# Main Name In Zone: {a},
-# Cache TTL: {b},
-# Class: {c},
-# Authoritive NS: {d},
-# Email Address: {e},
-# Last Change: {f},
-# Retry In Secs: {g},
-# Expiry: {h},
-# Slave Cache In Sec: {i}
-# '''.format(a = m_name, b = ttl, c = class_, d = ns, e = str(email).replace('\\', ''), f = serial, g = retry, h = expiry, i = minim)
-
-# print (output)

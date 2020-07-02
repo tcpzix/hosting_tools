@@ -102,7 +102,6 @@
                     <hr>
                     <button class="btn btn-info btn-check-domain">check</button>
                   </div>
-
                   <div class="domain-check-result">
                     <ul class="list-group">
                       <li class="list-group-item">
@@ -127,20 +126,25 @@
                       </li>
                     </ul>
                   </div>
-
-
                 </form>
               </div>
             </div>
-            <!-- disk + bandwith usage -->
-            <div class="well">
-              <h4>Disk Space Used</h4>
-              <div class="progress">
-                <div class="progress-bar" role="progressbar" aria-valuenow="60" aria-valuemin="0" aria-valuemax="100" style="width: 60%;">60%</div>
+            <!-- URL shorter -->
+            <div class="panel panel-default">
+              <div class="panel-heading main-color-bg">
+                <span class="glyphicon glyphicon-cog" aria-hidden="true"></span> URL Shorter
               </div>
-              <h4>Bandwidth used</h4>
-              <div class="progress">
-                <div class="progress-bar" role="progressbar" aria-valuenow="60" aria-valuemin="0" aria-valuemax="100" style="width: 40%;">40%</div>
+              <div class="panel-body">
+                <div class="input-group center-block  generated-pass-btn">
+                  <input type="text" class="form-control" placeholder="URL">
+                </div>
+                <hr>
+                <div class="input-group center-block generated-pass-btn">
+                  <input type="text" class="form-control" placeholder="Shorted Link" readonly>
+                  <hr>
+                  <br>
+                  <button class="btn btn-warning pass-gen-btn">Short URL</button>
+                </div>
               </div>
             </div>
           </div>
@@ -219,8 +223,8 @@
                       <span class="glyphicon glyphicon-list-alt
                       "></span> DNS Info
                     </div>
-                    <div class="panel-body" id="dns-output">
-                      <div class="">
+                    <div class="panel-body lead" id="dns-output">
+                      
                         <span class="label label-primary">NS Records</span>
                         <br>
                         <div id="ns-record"></div>
@@ -236,7 +240,7 @@
                         <span class="label label-warning">SOA Records</span>
                         <br>
                         <div id="soa-record"></div>
-                      </div>
+                      
                     </div>
                   </div>
                 </div>
@@ -259,8 +263,10 @@
                       <span class="glyphicon glyphicon-hdd
                       "></span> Port Info
                     </div>
-                    <div class="panel-body">
-                      <p>Lorem, ipsum dolor sit amet consectetur adipisicing elit. Vero, saepe.</p>
+                    <div class="panel-body lead">
+                      <span class="label label-danger">Open Ports</span>
+                      <div id="ports-output"></div>
+                      
                     </div>
                   </div>
                 </div>
@@ -292,7 +298,7 @@
                         </li>
                         <li class="list-group-item list-group-item-warning">Registration Data</li>
                         <li class="list-group-item">
-                          <table class="table">
+                          <table class="table lead">
                             <tbody>
                               <tr>
                                 <td>Name</td>
@@ -301,10 +307,6 @@
                               <tr>
                                 <td>organization</td>
                                 <td id="whois-org"></td>
-                              </tr>
-                              <tr>
-                                <td>street1</td>
-                                <td id="whois-street"></td>
                               </tr>
                               <tr>
                                 <td>city</td>
@@ -322,8 +324,7 @@
                           </table>
                         </li>
                         <li class="list-group-item list-group-item-danger">Name Servers</li>
-                        <li class="list-group-item" id="whois-ns">
-                        </li>
+                        <li class="list-group-item"><div class="container" id="whois-ns"></div></li>
                       </ul>
                     </div>
                   </div>
@@ -335,8 +336,31 @@
                       <span class="glyphicon glyphicon-wrench
                       "></span> IP Info
                     </div>
-                    <div class="panel-body">
-                      <p>Lorem, ipsum dolor sit amet consectetur adipisicing elit. Vero, saepe.</p>
+                    <div class="panel-body ip-output">
+                      <table class="table lead">
+                        <tbody>
+                          <tr>
+                            <td>IP:</td>
+                            <td id="ip-ip"></td>
+                          </tr>
+                          <tr>
+                            <td>Country:</td>
+                            <td id="ip-country"></td>
+                          </tr>
+                          <tr>
+                            <td>Region</td>
+                            <td id="ip-region"></td>
+                          </tr>
+                          <tr>
+                            <td>City:</td>
+                            <td id="ip-city"></td>
+                          </tr>
+                          <tr>
+                            <td>Timezones:</td>
+                            <td id="ip-timezone"></td>
+                          </tr>
+                        </tbody>
+                      </table>
                     </div>
                   </div>
                 </div>
@@ -449,3 +473,6 @@
     <script src="{{ url_for('static', filename='js/bootstrap.min.js') }}"></script>
   </body>
 </html>
+
+
+
